@@ -1,10 +1,16 @@
-export interface IMoodleWSGradingform {
+import IMoodleWSParams from './IMoodleWSParams';
+
+export default interface IMoodleWSGradingform {
   guide: {
-    graderGradingpanelFetch: (data?: any) => Promise<any>;
-    graderGradingpanelStore: (data?: any) => Promise<any>;
+    /** Fetch the data required to display the grader grading panel, creating the grade item if required */
+    graderGradingpanelFetch: (params: IMoodleWSParams) => Promise<any>;
+    /** Store the grading data for a user from the grader grading panel. */
+    graderGradingpanelStore: (params: IMoodleWSParams) => Promise<any>;
   };
   rubric: {
-    graderGradingpanelFetch: (data?: any) => Promise<any>;
-    graderGradingpanelStore: (data?: any) => Promise<any>;
+    /** Fetch the data required to display the grader grading panel, creating the grade item if required */
+    graderGradingpanelFetch: (params: IMoodleWSParams) => Promise<any>;
+    /** Store the grading data for a user from the grader grading panel. */
+    graderGradingpanelStore: (params: IMoodleWSParams) => Promise<any>;
   };
 }

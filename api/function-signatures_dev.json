@@ -1,0 +1,89 @@
+{
+  "items": [
+    {
+      "name": "core_webservice_get_site_info",
+      "body": "",
+      "result": { "type": "IMoodleSiteInfo" }
+    },
+    {
+      "name": "core_course_get_categories",
+      "body": "",
+      "result": { "type": "IMoodleCategory[]" }
+    },
+    {
+      "name": "core_course_get_courses_by_field",
+      "body": {
+        "type": "{field: 'category', value: number}"
+      },
+      "result": { "type": "IMoodleWSCoursesResponse" }
+    },
+    {
+      "name": "core_course_get_contents",
+      "body": { "type": "{courseid: number}" },
+      "result": { "type": "IMoodleCourseSection[]" }
+    },
+    {
+      "name": "mod_forum_get_forums_by_courses",
+      "body": {
+        "type": "{[k: string]: number | undefined ,'courseids[]'?: number}",
+        "optional": true
+      },
+      "result": { "type": "IMoodleForum[]" }
+    },
+    {
+      "name": "mod_forum_get_forum_discussions",
+      "body": {
+        "type": "{forumid: number}"
+      },
+      "result": { "type": "IMoodleWSDiscussionsResponse" }
+    },
+    {
+      "name": "mod_forum_get_discussion_posts",
+      "body": {
+        "type": "{discussionid: number}"
+      },
+      "result": { "type": "IMoodleWSDiscussionPostsResponse" }
+    },
+    {
+      "name": "mod_quiz_get_user_attempts",
+      "body": {
+        "type": "{quizid: number, userid?: number, status: 'finished' | 'unfinished' | 'all', includepreveiews?: boolean}"
+      },
+      "result": { "type": "IMoodleWSAttemptsResponse" }
+    },
+    {
+      "name": "mod_quiz_get_quiz_access_information",
+      "body": {
+        "type": "{quizid: number}"
+      },
+      "result": { "type": "IMoodleQuizAccessInfo" }
+    },
+    {
+      "name": "mod_quiz_start_attempt",
+      "body": {
+        "type": "{quizid: number}"
+      },
+      "result": {
+        "type": "IMoodleWSStartAttemptResponse"
+      }
+    },
+    {
+      "name": "mod_quiz_get_attempt_data",
+      "body": {
+        "type": "{attemptid: number, page: number}"
+      },
+      "result": {
+        "type": "IMoodleAttemptData"
+      }
+    },
+    {
+      "name": "mod_quiz_save_attempt",
+      "body": {
+        "type": "{attemptid: number, data: {slots: number | number[], [k: string]: number | number[]}}"
+      },
+      "result": {
+        "type": "IMoodleWSStatus"
+      }
+    }
+  ]
+}

@@ -1,5 +1,8 @@
-export interface IMoodleWSLocal {
+import IMoodleWSParams from './IMoodleWSParams';
+
+export default interface IMoodleWSLocal {
   mobile: {
-    getPluginSettings: (data?: any) => Promise<any>;
+    /** Retrieve the plugin settings. */
+    getPluginSettings: (params: IMoodleWSParams) => Promise<any>;
   };
 }

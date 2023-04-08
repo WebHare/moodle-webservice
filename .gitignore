@@ -2,6 +2,7 @@
 .docs
 api/functions.html
 package-lock.json
+.prettierrc
 
 # Logs
 logs
@@ -86,6 +87,11 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+
+test.ts
+tsconfig.json
+*.ts
+!*.d.ts
 
 # Gatsby files
 .cache/
