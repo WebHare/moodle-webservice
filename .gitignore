@@ -88,8 +88,11 @@ typings/
 .nuxt
 dist
 
-*.js
-*.d.ts
+test.ts
+tsconfig.json
+*.ts
+!*.d.ts
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and *not* Next.js

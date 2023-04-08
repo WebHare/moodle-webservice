@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "Moodle Web Service API client with intellisense and typechecking",
   "main": "index.js",
-  "scripts": {
-    "table": "node utils/table.js --update-standalone",
-    "extract": "node utils/extract.js"
-  },
+  "scripts": {},
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
