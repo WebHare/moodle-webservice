@@ -192,3 +192,6 @@ Note that the `data` argument is not always required and can be omitted.
 
 Due to poor moodle webservice function documentation not all functions have definite parameter types
 and instead have `IMoodleWSParams` as its parameter type and `any` as its return type.
+
+I've added types for the most important functions first, and I'll keep adding more as I go,
+contact me if you want to add types for a function that you know about.
