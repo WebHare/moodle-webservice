@@ -7,13 +7,13 @@ A simple and developer friendly TypeScript module to perform Web Service (API) c
 Install the module
 
 ```bash
-npm install moodle-js
+npm install moodle-webservice
 ```
 
 Get site info (using Promised callbacks)
 
 ```ts
-import MoodleApi, { MoodleClient } from 'moodle-js';
+import MoodleApi, { MoodleClient } from 'moodle-webservice';
 
 const moodle = new MoodleApi({
   baseUrl: 'https://moodle.example.com', //<-- Put your Moodle URL here
@@ -29,7 +29,7 @@ moodle.core.webservice //<-- with intellisense and type checking
 Get course contents (using async-await approach)
 
 ```ts
-import MoodleApi from 'moodle-js';
+import MoodleApi from 'moodle-webservice';
 const moodle = new MoodleApi({ ... });
 
 async function main() {
@@ -61,7 +61,7 @@ Instead of having to instantiate a new client instance every time you want to ac
 as a different user, you can change the api token on the fly without changing the client instance.
 
 ```ts
-import MoodleApi from 'moodle-js';
+import MoodleApi from 'moodle-webservice';
 const moodle = new MoodleApi({ ... });
 
 async function main() {
@@ -93,7 +93,7 @@ if you don't immediately have your token to pass to the api you can import Moodl
 and use the authenticate method to get one.
 
 ```ts
-import MoodleApi, { MoodleClient } from 'moodle-js';
+import MoodleApi, { MoodleClient } from 'moodle-webservice';
 const YOUR_WEBSITE_URL = 'https://moodle.example.com';
 //No token provided beforehand
 const moodle = new MoodleApi({
@@ -153,7 +153,7 @@ users[0][firstname]=Foo&users[0][lastname]=Bar&users[0][username]=foo&users[0][p
 To perform the conversion in the code invoke the `flatten` function
 
 ```ts
-import { MoodleClient } from 'moodle-js';
+import { MoodleClient } from 'moodle-webservice';
 
 const form = MoodleClient.flatten({
   users: [
