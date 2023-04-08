@@ -187,3 +187,8 @@ The following table represents mapping between JavaScript function names and Moo
 | [Read more...](https://github.com/papnkukn/node-moodle/blob/main/wiki/functions.md) |                                |                                                                |
 
 Note that the `data` argument is not always required and can be omitted.
+
+## Note regarding types
+
+Due to poor moodle webservice function documentation not all functions have definite parameter types
+and instead have `IMoodleWSParams` as its parameter type and `any` as its return type.
