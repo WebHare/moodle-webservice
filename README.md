@@ -123,6 +123,60 @@ async function main() {
 main();
 ```
 
+## Helper classes
+
+The moodle webservice has some caveats here and there such as how when getting an attempt
+moodle doesn't send you all the raw question data, instead some is raw data while other is
+the rendered HTML question element.
+`moodle-webservice` aims to solve that by providing a number of helper classes such as `MoodleAttempt` , these are abstract classes that have a number of functions that aim to solve
+these issues.
+
+```ts
+import MoodleApi, { MoodleAttempt } from 'moodle-webservice';
+
+const moodle = MoodleApi({
+  baseUrl: 'https://moodle.example.com',
+  token: '375208h132h1222h20h202b823b227cd',
+});
+
+moodle.mod.quiz.getAttemptReview({ attemptid: 3665103 }).then((res) => {
+  const questions = res.questions; //<-- of type IMoodleQuestion[].
+
+  //IMoodleQuestion does not contain the actual question text or choices.
+  questions[0].text; //<-- Error no such property on questions
+
+  const parsedReview = MoodleAttempt.parse(res);
+  const parsedQuestions = parsedReview.questions; //<-- of type IMoodleParsedQuestion[].
+
+  //IMoodleParsedQuestion contains additional data such as the name, instance number, and choices
+  console.log(parsedQuestions[0].text);
+  //Output: "The muscles of facial expression are supplied by the ____ nerve."
+});
+```
+
+or parse a single question
+
+```ts
+import MoodleApi, { MoodleQuestion } from 'moodle-webservice';
+
+const moodle = MoodleApi({
+  baseUrl: 'https://moodle.example.com',
+  token: '375208h132h1222h20h202b823b227cd',
+});
+
+moodle.mod.quiz.getAttemptReview({ attemptid: 3665103 }).then((res) => {
+  const questions = res.questions; //<-- of type IMoodleQuestion[].
+  //IMoodleQuestion does not contain the actual question text or choices.
+  questions[0].text; //<-- Error no such property on questions
+
+  //IMoodleParsedQuestion contains additional data such as the name, instance number and choices
+  const parsedQuestion = MoodleQuestion.parse(questions[0]); //<-- of type IMoodleParsedQuestion.
+
+  console.log(parsedQuestion.text);
+  //Output: "The muscles of facial expression are supplied by the ____ nerve."
+});
+```
+
 ## JSON to form data
 
 Moodle has a peculiar way of specifying request parameters.
