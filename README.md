@@ -7,15 +7,15 @@ A simple and developer friendly TypeScript module to perform Web Service (API) c
 Install the module
 
 ```bash
-npm install moodle-js
+npm install moodle-webservice
 ```
 
 Get site info (using Promised callbacks)
 
 ```ts
-import MoodleApi, { MoodleClient } from 'moodle-js';
+import MoodleApi, { MoodleClient } from 'moodle-webservice';
 
-const moodle = new MoodleApi({
+const moodle = MoodleApi({
   baseUrl: 'https://moodle.example.com', //<-- Put your Moodle URL here
   token: 'exppsBdQwLvNwYRoAuaiBO5j0aWTzxU6', //<-- Put your token here
 });
@@ -29,8 +29,8 @@ moodle.core.webservice //<-- with intellisense and type checking
 Get course contents (using async-await approach)
 
 ```ts
-import MoodleApi from 'moodle-js';
-const moodle = new MoodleApi({ ... });
+import MoodleApi from 'moodle-webservice';
+const moodle = MoodleApi({ ... });
 
 async function main() {
   try {
@@ -61,8 +61,8 @@ Instead of having to instantiate a new client instance every time you want to ac
 as a different user, you can change the api token on the fly without changing the client instance.
 
 ```ts
-import MoodleApi from 'moodle-js';
-const moodle = new MoodleApi({ ... });
+import MoodleApi from 'moodle-webservice';
+const moodle = MoodleApi({ ... });
 
 async function main() {
   try {
@@ -93,10 +93,10 @@ if you don't immediately have your token to pass to the api you can import Moodl
 and use the authenticate method to get one.
 
 ```ts
-import MoodleApi, { MoodleClient } from 'moodle-js';
+import MoodleApi, { MoodleClient } from 'moodle-webservice';
 const YOUR_WEBSITE_URL = 'https://moodle.example.com';
 //No token provided beforehand
-const moodle = new MoodleApi({
+const moodle = MoodleApi({
   baseUrl: YOUR_WEBSITE_URL, //<-- Put your Moodle URL here
 });
 
@@ -108,7 +108,7 @@ async function main() {
       credentials: { username: 'AwesomeJohn', password: 'SmartPa33word' },
     });
 
-    moodle.api.config.token = token;
+    moodle.config.token = token;
 
     const { fullname: firstName } = await moodle.core.webservice.getSiteInfo();
     /*
@@ -153,7 +153,7 @@ users[0][firstname]=Foo&users[0][lastname]=Bar&users[0][username]=foo&users[0][p
 To perform the conversion in the code invoke the `flatten` function
 
 ```ts
-import { MoodleClient } from 'moodle-js';
+import { MoodleClient } from 'moodle-webservice';
 
 const form = MoodleClient.flatten({
   users: [
@@ -187,3 +187,11 @@ The following table represents mapping between JavaScript function names and Moo
 | [Read more...](https://github.com/papnkukn/node-moodle/blob/main/wiki/functions.md) |                                |                                                                |
 
 Note that the `data` argument is not always required and can be omitted.
+
+## Note regarding types
+
+Due to poor moodle webservice function documentation not all functions have definite parameter types
+and instead have `IMoodleWSParams` as its parameter type and `any` as its return type.
+
+I've added types for the most important functions first, and I'll keep adding more as I go,
+contact me if you want to add types for a function that you know about.

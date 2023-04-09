@@ -1,15 +1,20 @@
 {
-  "name": "moodle-js",
-  "version": "1.0.0",
+  "name": "moodle-webservice",
+  "version": "1.0.3",
   "description": "Moodle Web Service API client with intellisense and typechecking",
   "main": "index.js",
-  "scripts": {
-    "table": "node utils/table.js --update-standalone",
-    "extract": "node utils/extract.js"
-  },
+  "scripts": {},
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
+  "repository": {
+    "type": "git",
+    "url": " https://github.com/IHAVENOARMS/moodle-webservice"
+  },
+  "keywords": [
+    "moodle",
+    "webservice"
+  ],
   "devDependencies": {
     "@types/debug": "^4.1.7",
     "@types/node": "^18.15.11",
