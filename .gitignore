@@ -88,7 +88,7 @@ typings/
 .nuxt
 dist
 
-# test.ts
+test.ts
 # tsconfig.json
 # *.ts
 # !*.d.ts
