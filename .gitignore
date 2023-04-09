@@ -88,10 +88,10 @@ typings/
 .nuxt
 dist
 
-test.ts
-tsconfig.json
-*.ts
-!*.d.ts
+# test.ts
+# tsconfig.json
+# *.ts
+# !*.d.ts
 
 # Gatsby files
 .cache/
