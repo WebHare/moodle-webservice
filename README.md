@@ -15,7 +15,7 @@ Get site info (using Promised callbacks)
 ```ts
 import MoodleApi, { MoodleClient } from 'moodle-webservice';
 
-const moodle = new MoodleApi({
+const moodle = MoodleApi({
   baseUrl: 'https://moodle.example.com', //<-- Put your Moodle URL here
   token: 'exppsBdQwLvNwYRoAuaiBO5j0aWTzxU6', //<-- Put your token here
 });
@@ -30,7 +30,7 @@ Get course contents (using async-await approach)
 
 ```ts
 import MoodleApi from 'moodle-webservice';
-const moodle = new MoodleApi({ ... });
+const moodle = MoodleApi({ ... });
 
 async function main() {
   try {
@@ -62,7 +62,7 @@ as a different user, you can change the api token on the fly without changing th
 
 ```ts
 import MoodleApi from 'moodle-webservice';
-const moodle = new MoodleApi({ ... });
+const moodle = MoodleApi({ ... });
 
 async function main() {
   try {
@@ -96,7 +96,7 @@ and use the authenticate method to get one.
 import MoodleApi, { MoodleClient } from 'moodle-webservice';
 const YOUR_WEBSITE_URL = 'https://moodle.example.com';
 //No token provided beforehand
-const moodle = new MoodleApi({
+const moodle = MoodleApi({
   baseUrl: YOUR_WEBSITE_URL, //<-- Put your Moodle URL here
 });
 
@@ -108,7 +108,7 @@ async function main() {
       credentials: { username: 'AwesomeJohn', password: 'SmartPa33word' },
     });
 
-    moodle.api.config.token = token;
+    moodle.config.token = token;
 
     const { fullname: firstName } = await moodle.core.webservice.getSiteInfo();
     /*
