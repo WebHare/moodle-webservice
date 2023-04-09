@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import MoodleApi, { MoodleClient } from '.';
-import MoodleAttempt from './classes/MoodleAttempt';
+import MoodleApi, { MoodleClient, MoodleAttempt } from '.';
 import utils from 'util';
 
 const moodle = MoodleApi({
