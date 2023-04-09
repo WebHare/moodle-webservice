@@ -57,8 +57,16 @@ import type IMoodleWSTool from './IMoodleWSTool';
 import type IMoodleWSWarning from './IMoodleWSWarning';
 import type IMoodleWSCredentials from './IMoodleWSCredentials';
 import type IMoodleWSAPIConfig from './IMoodleWSAPIConfig';
+import type IMoodleParsedAttemptData from './IMoodleParsedAttemptData';
+import type IMoodleParsedAttemptReview from './IMoodleParsedAttemptReview';
+import type IMoodleParsedQuestion from './IMoodleParsedQuestion';
+import type IMoodleQuestionChoice from './IMoodleQuestionChoice';
 
 export type {
+  IMoodleQuestionChoice,
+  IMoodleParsedAttemptReview,
+  IMoodleParsedAttemptData,
+  IMoodleParsedQuestion,
   IMoodleWSAPIConfig,
   IMoodleWSCredentials,
   IMoodleAttachment,
