@@ -11,7 +11,6 @@ import {
   IMoodleWSFn,
   IMoodleWSAPI,
   IMoodleWSParams,
-  IMoodleWSCredentials,
 } from './interfaces';
 
 import IMoodleWSAuthResponse from './interfaces/IMoodleWSAuthResponse';
@@ -20,7 +19,6 @@ import IMoodleWSAuthResponse from './interfaces/IMoodleWSAuthResponse';
 import pkg from './package.json';
 import path from 'path';
 import NameValuePair from './types/NameValuePair';
-import IMoodleWSAPIConfig from './interfaces/IMoodleWSAPIConfig';
 
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
   [k: string]: any;
@@ -240,7 +238,7 @@ export class MoodleClient {
         //Get web service functio name
         let wsfunction = null;
         wsfunction = item.name;
-        fnDebugger = debug(`moodle:${item.module}:${item.facility}`);
+        fnDebugger = debug(`moodle:api:${item.module}:${item.facility}`);
         fnDebugger(`Calling ${item.preferName}...`);
 
         //Verify if function name is set
