@@ -7,21 +7,20 @@ import type NumericBoolean from './NumericBoolean';
 import type QuestionBehaviours from './QuestionBehaviours';
 import type QuestionStates from './QuestionStates';
 import type QuestionStatuses from './QuestionStatuses';
-import type QuestionTypes from './QuestionTypes';
+import QuestionTypes from './QuestionTypes';
 import type QuizAccessRules from './QuizAccessRules';
 import type ResourceTypes from './ResourceTypes';
 
-export type {
-  AttemptStates,
-  EnrolmentMethods,
-  ModuleNames,
-  NameValuePair,
-  NameVersionPair,
-  NumericBoolean,
+export {
+  QuestionTypes,
   QuestionBehaviours,
   QuestionStates,
   QuestionStatuses,
-  QuestionTypes,
   QuizAccessRules,
   ResourceTypes,
+  AttemptStates,
+  EnrolmentMethods,
+  ModuleNames,
 };
+
+export type { NameValuePair, NameVersionPair, NumericBoolean };
