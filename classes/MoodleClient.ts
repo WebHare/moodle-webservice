@@ -26,7 +26,7 @@ interface IExtMoodleWSAPI extends IMoodleWSAPI {
 
 //Load function definitions
 const json = fs.readFileSync(
-  path.resolve(__dirname, 'api', 'functions.json'),
+  path.resolve(__dirname, '../api', 'functions.json'),
   'utf8'
 );
 const definition: IMoodleWSDefinition = JSON.parse(json);
