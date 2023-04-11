@@ -1,4 +1,4 @@
-import { IMoodleErrorOptions, IMoodleClientOptions, IMoodleWSAPI } from '../interfaces';
+import { IMoodleClientOptions, IMoodleWSAPI } from '../interfaces';
 import IMoodleWSAuthResponse from '../interfaces/IMoodleWSAuthResponse';
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
     [k: string]: any;
@@ -6,12 +6,6 @@ interface IExtMoodleWSAPI extends IMoodleWSAPI {
 type AnyObject = {
     [key: string]: any;
 };
-export declare class MoodleError extends Error {
-    exception?: string;
-    errorcode?: number;
-    debuginfo?: string;
-    constructor(options: IMoodleErrorOptions);
-}
 export declare class MoodleClient {
     options: IMoodleClientOptions;
     private _definition?;

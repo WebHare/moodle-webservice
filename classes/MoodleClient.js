@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MoodleClient = exports.MoodleError = void 0;
+exports.MoodleClient = void 0;
 const os_1 = __importDefault(require("os"));
 const fs_1 = __importDefault(require("fs"));
 const url_1 = require("url");
@@ -21,20 +21,10 @@ const debug_1 = __importDefault(require("debug"));
 //Load package info
 const package_json_1 = __importDefault(require("../package.json"));
 const path_1 = __importDefault(require("path"));
+const MoodleError_1 = __importDefault(require("./MoodleError"));
 //Load function definitions
 const json = fs_1.default.readFileSync(path_1.default.resolve(__dirname, '../api', 'functions.json'), 'utf8');
 const definition = JSON.parse(json);
-class MoodleError extends Error {
-    constructor(options) {
-        var _a;
-        super(options.message || options.error);
-        this.name = 'MoodleError';
-        this.exception = (_a = options.exception) !== null && _a !== void 0 ? _a : 'moodle_exception';
-        this.errorcode = options.errorcode;
-        this.debuginfo = options.debuginfo;
-    }
-}
-exports.MoodleError = MoodleError;
 class MoodleClient {
     constructor(options) {
         this.options = options;
@@ -147,7 +137,7 @@ class MoodleClient {
             const res = yield (0, node_fetch_1.default)(url, options);
             const result = yield res.json();
             if (typeof result.error === 'string') {
-                throw new MoodleError(result);
+                throw new MoodleError_1.default(result);
             }
             return result;
         });
@@ -224,7 +214,7 @@ class MoodleClient {
                 //Moodle always returns HTTP status code 200
                 //Error can be detected by object properties
                 if (typeof result.exception === 'string') {
-                    throw new MoodleError(result);
+                    throw new MoodleError_1.default(result);
                 }
                 //Success
                 fnDebugger(`Successfully called ${item.preferName} with parameters: ${(_a = JSON.stringify(params)) !== null && _a !== void 0 ? _a : 'null'}.`);
