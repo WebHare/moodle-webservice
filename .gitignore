@@ -90,7 +90,7 @@ dist
 
 test.ts
 tsconfig.json
-*.ts
+# *.ts
 !*.d.ts
 
 # Gatsby files

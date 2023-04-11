@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MoodleQuestion = exports.MoodleClient = exports.MoodleAttemptUpdate = exports.MoodleAttempt = exports.MoodleApi = void 0;
+exports.MoodleError = exports.MoodleQuestion = exports.MoodleClient = exports.MoodleAttemptUpdate = exports.MoodleAttempt = exports.MoodleApi = void 0;
 const MoodleAttempt_1 = __importDefault(require("./MoodleAttempt"));
 exports.MoodleAttempt = MoodleAttempt_1.default;
 const MoodleAttemptUpdate_1 = __importDefault(require("./MoodleAttemptUpdate"));
@@ -36,3 +36,5 @@ exports.MoodleApi = MoodleClient_1.default;
 Object.defineProperty(exports, "MoodleClient", { enumerable: true, get: function () { return MoodleClient_1.MoodleClient; } });
 const MoodleQuestion_1 = __importDefault(require("./MoodleQuestion"));
 exports.MoodleQuestion = MoodleQuestion_1.default;
+const MoodleError_1 = __importDefault(require("./MoodleError"));
+exports.MoodleError = MoodleError_1.default;
