@@ -197,6 +197,7 @@ export default abstract class MoodleQMultiChoice {
 
     return {
       ...MoodleQMultiChoice._removeHTML(question),
+      mark: question.mark ? Number(question.mark) : undefined,
       settings,
       instance,
       text,
