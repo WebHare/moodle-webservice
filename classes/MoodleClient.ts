@@ -5,7 +5,6 @@ import fetch, { RequestInit } from 'node-fetch';
 import debug from 'debug';
 
 import {
-  IMoodleErrorOptions,
   IMoodleClientOptions,
   IMoodleWSDefinition,
   IMoodleWSFn,
@@ -19,6 +18,7 @@ import IMoodleWSAuthResponse from '../interfaces/IMoodleWSAuthResponse';
 import pkg from '../package.json';
 import path from 'path';
 import NameValuePair from '../types/NameValuePair';
+import MoodleError from './MoodleError';
 
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
   [k: string]: any;
@@ -33,19 +33,6 @@ const definition: IMoodleWSDefinition = JSON.parse(json);
 
 type AnyObject = { [key: string]: any };
 type Diggable = string | AnyObject;
-
-export class MoodleError extends Error {
-  exception?: string;
-  errorcode?: number;
-  debuginfo?: string;
-  constructor(options: IMoodleErrorOptions) {
-    super(options.message || options.error);
-    this.name = 'MoodleError';
-    this.exception = options.exception ?? 'moodle_exception';
-    this.errorcode = options.errorcode;
-    this.debuginfo = options.debuginfo;
-  }
-}
 
 export class MoodleClient {
   private _definition?: IMoodleWSDefinition;

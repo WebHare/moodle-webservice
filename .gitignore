@@ -89,9 +89,9 @@ typings/
 dist
 
 test.ts
-# tsconfig.json
+tsconfig.json
 # *.ts
-# !*.d.ts
+!*.d.ts
 
 # Gatsby files
 .cache/
