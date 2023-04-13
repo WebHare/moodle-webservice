@@ -1,13 +1,14 @@
-import { IMoodleQuestion } from '../interfaces';
-import { parse, HTMLElement } from 'node-html-parser';
-import IMoodleParsedQuestion from '../interfaces/IMoodleParsedQuestion';
-import IMoodleQuestionChoice from '../interfaces/IMoodleQuestionChoice';
-import MoodleQuestion from './MoodleQuestion';
-import { QuestionTypes } from '../types';
-import debug from 'debug';
+import { IMoodleQuestion } from "../interfaces";
+import { parse, HTMLElement } from "node-html-parser";
+import IMoodleParsedQuestion from "../interfaces/IMoodleParsedQuestion";
+import IMoodleQuestionChoice from "../interfaces/IMoodleQuestionChoice";
+import MoodleQuestion from "./MoodleQuestion";
+import { QuestionStates, QuestionTypes } from "../types";
+import debug from "debug";
+import IMoodleQuestionSettings from "../interfaces/IMoodleQuestionSettings";
 
-export default class MoodleQMultiChoice {
-  private static _debug = debug('moodle:helper:question:multichoice');
+export default abstract class MoodleQMultiChoice {
+  private static _debug = debug("moodle:helper:question:multichoice");
 
   //TODO: Replace with Custom Error class in the future
   private static _error(message: string) {
@@ -40,7 +41,7 @@ export default class MoodleQMultiChoice {
       `Extracting input element from choice HTML element...`
     );
     const inputElement = choiceElement.querySelector('input[type="radio"]');
-    if (!inputElement) throw MoodleQMultiChoice._couldNotFind('input element');
+    if (!inputElement) throw MoodleQMultiChoice._couldNotFind("input element");
     MoodleQMultiChoice._debug(
       `Successfully extracted input element from choice HTML element.`
     );
@@ -54,9 +55,9 @@ export default class MoodleQMultiChoice {
     const label: string = MoodleQMultiChoice._extractChoiceLabel(choiceElement);
 
     const isChosen: boolean =
-      inputElement.getAttribute('checked') === 'checked';
+      inputElement.getAttribute("checked") === "checked";
 
-    const value: number = Number(inputElement.getAttribute('value'));
+    const value: number = Number(inputElement.getAttribute("value"));
 
     //TODO: Find what images look like and extract them as well.
     const choice: IMoodleQuestionChoice = { label, value };
@@ -65,15 +66,15 @@ export default class MoodleQMultiChoice {
   }
 
   private static _extractChoices(parsedHTML: HTMLElement): {
-    chosenValue: number | undefined;
+    chosen: number | undefined;
     choices: IMoodleQuestionChoice[];
   } {
-    let chosenValue: number | undefined;
+    let chosen: number | undefined;
     const choices: IMoodleQuestionChoice[] = [];
-    const choiceElements = parsedHTML.querySelectorAll('.answer > div');
+    const choiceElements = parsedHTML.querySelectorAll(".answer > div");
 
     if (choiceElements.length === 0)
-      throw MoodleQMultiChoice._couldNotFind('choice elements');
+      throw MoodleQMultiChoice._couldNotFind("choice elements");
 
     for (let i = 0; i < choiceElements.length; i++) {
       const choiceElement = choiceElements[i];
@@ -85,17 +86,49 @@ export default class MoodleQMultiChoice {
 
       if (isChosen) {
         MoodleQMultiChoice._debug(`Found selected answer: #${choice.value}.`);
-        chosenValue = choice.value;
+        chosen = choice.value;
       }
     }
 
-    return { choices, chosenValue };
+    return { choices, chosen };
+  }
+
+  private static _extractAnswerFromChoices(
+    choices: IMoodleQuestionChoice[],
+    chosen: number
+  ): IMoodleQuestionChoice {
+    const answer = choices.find((choice) => choice.value === chosen)!;
+    if (answer) {
+      MoodleQMultiChoice._debug(`Successfully retrieved answer from choices.`);
+    } else {
+      MoodleQMultiChoice._debug(
+        `Could not find answer within choices... possible bug here.`
+      );
+    }
+    return answer;
+  }
+
+  private static _extractAnswerLabelFromHTML(parsedHTML: HTMLElement) {
+    const answer = parsedHTML.querySelector(".rightanswer > span")?.text;
+    if (answer)
+      MoodleQMultiChoice._debug(
+        `Successfully extracted answer label from HTML, label: <${answer}>.`
+      );
+    else
+      MoodleQMultiChoice._debug(
+        `Could not find answer label in HTML, possible bug here.`
+      );
+    return answer;
+  }
+
+  private static _parseSettings(settings: string): IMoodleQuestionSettings {
+    return JSON.parse(settings) as IMoodleQuestionSettings;
   }
 
   private static _checkCompatibility(question: IMoodleQuestion) {
     if (question.type !== QuestionTypes.MultiChoice)
       throw MoodleQMultiChoice._error(
-        'Trying to parse a question that is not multichoice!'
+        "Trying to parse a question that is not multichoice!"
       );
   }
 
@@ -112,15 +145,51 @@ export default class MoodleQMultiChoice {
 
     MoodleQMultiChoice._checkCompatibility(question);
 
-    const parsedHTML = parse(question.html);
+    const settings = MoodleQMultiChoice._parseSettings(question.settings);
 
+    const parsedHTML = parse(question.html);
     // Accessing 'private' members.
     // Since there is really no such thing as 'private' members in javascript
-    const instance: number = MoodleQuestion['_extractInstance'](parsedHTML);
-    const text: string = MoodleQuestion['_extractText'](parsedHTML);
+    const instance: number = MoodleQuestion["_extractInstance"](parsedHTML);
+    const text: string = MoodleQuestion["_extractText"](parsedHTML);
 
-    const { choices, chosenValue } =
-      MoodleQMultiChoice._extractChoices(parsedHTML);
+    const { choices, chosen } = MoodleQMultiChoice._extractChoices(parsedHTML);
+
+    //Only answered questions have a state
+    let answer: IMoodleQuestionChoice | undefined;
+
+    if (question.state) {
+      switch (question.state) {
+        case QuestionStates.GradedRight:
+          MoodleQMultiChoice._debug(
+            `Question is already graded right, getting the chosen answer...`
+          );
+          answer = MoodleQMultiChoice._extractAnswerFromChoices(
+            choices,
+            chosen!
+          );
+          break;
+        default:
+          MoodleQMultiChoice._debug(
+            `Question is graded wrong or given up on, extracting answer from HTML...`
+          );
+          const answerLabel =
+            MoodleQMultiChoice._extractAnswerLabelFromHTML(parsedHTML);
+          const answerValue = choices.find(
+            (choice) => choice.label === answerLabel
+          )?.value;
+          if (answerValue)
+            MoodleQMultiChoice._debug(
+              `Succesfully extracted answer value from HTML, value: <${answerValue}>.`
+            );
+          else
+            MoodleQMultiChoice._debug(
+              `Could not extract answer value from HTML, possible bug here.`
+            );
+          answer = { label: answerLabel, value: answerValue! };
+          break;
+      }
+    }
 
     MoodleQMultiChoice._debug(
       `Successfully parsed multichoice question #${question.slot}...`
@@ -128,10 +197,12 @@ export default class MoodleQMultiChoice {
 
     return {
       ...MoodleQMultiChoice._removeHTML(question),
+      settings,
       instance,
       text,
       choices,
-      answer: chosenValue,
+      chosen,
+      answer,
     };
   }
 }
