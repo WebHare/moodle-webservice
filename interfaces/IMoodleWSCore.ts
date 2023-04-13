@@ -1,9 +1,9 @@
-import IMoodleWSParams from './IMoodleWSParams';
-import IMoodleCategory from './IMoodleCategory';
-import IMoodleCourseSection from './IMoodleCourseSection';
-import IMoodleWSCoursesResponse from './IMoodleWSCoursesResponse';
-import IMoodleSiteInfo from './IMoodleSiteInfo';
-import IMoodleWSCourseModuleResponse from './IMoodleWSCourseModuleResponse';
+import IMoodleWSParams from "./IMoodleWSParams";
+import IMoodleCategory from "./IMoodleCategory";
+import IMoodleCourseSection from "./IMoodleCourseSection";
+import IMoodleWSCoursesResponse from "./IMoodleWSCoursesResponse";
+import IMoodleSiteInfo from "./IMoodleSiteInfo";
+import IMoodleWSCourseModuleResponse from "./IMoodleWSCourseModuleResponse";
 
 export default interface IMoodleWSCore {
   user: {
@@ -370,16 +370,18 @@ export default interface IMoodleWSCore {
     /** Fetch the data for the activity chooser footer. */
     getActivityChooserFooter: (params: IMoodleWSParams) => Promise<any>;
     /** get categories */
-    getCategories: () => Promise<IMoodleCategory[]>;
+    getCategories: (params?: { token?: string }) => Promise<IMoodleCategory[]>;
     /** get course content (modules + web service file urls) */
     getContents: (params: {
       courseid: number;
+      token?: string;
     }) => Promise<IMoodleCourseSection[]>;
     /** Fetch all the content items (activities, resources and their subtypes) for the activity picker */
     getCourseContentItems: (params: IMoodleWSParams) => Promise<any>;
     /** Return information about a course module. */
     getCourseModule: (params: {
       cmid: number;
+      token?: string;
     }) => Promise<IMoodleWSCourseModuleResponse>;
     /** Return information about a given module name and instance id. */
     getCourseModuleByInstance: (params: IMoodleWSParams) => Promise<any>;
@@ -387,8 +389,9 @@ export default interface IMoodleWSCore {
     getCourses: (params: IMoodleWSParams) => Promise<any>;
     /** Get courses matching a specific field (id/s, shortname, idnumber, category) */
     getCoursesByField: (params: {
-      field: 'category';
+      field: "category";
       value: number;
+      token?: string;
     }) => Promise<IMoodleWSCoursesResponse>;
     /** List of enrolled courses for the given timeline classification (past, inprogress, or future). */
     getEnrolledCoursesByTimelineClassification: (
@@ -755,6 +758,6 @@ export default interface IMoodleWSCore {
   };
   webservice: {
     /** Return some site info / user info / list web service functions */
-    getSiteInfo: () => Promise<IMoodleSiteInfo>;
+    getSiteInfo: (params?: { token?: string }) => Promise<IMoodleSiteInfo>;
   };
 }
