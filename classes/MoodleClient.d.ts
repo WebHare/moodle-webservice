@@ -1,5 +1,5 @@
-import { IMoodleClientOptions, IMoodleWSAPI } from '../interfaces';
-import IMoodleWSAuthResponse from '../interfaces/IMoodleWSAuthResponse';
+import { IMoodleClientOptions, IMoodleWSAPI } from "../interfaces";
+import IMoodleWSAuthResponse from "../interfaces/IMoodleWSAuthResponse";
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
     [k: string]: any;
 }
@@ -16,10 +16,10 @@ export declare class MoodleClient {
     private static _buildUserAgent;
     get userAgent(): string;
     static flatten(data: any): AnyObject;
-    static authenticate({ baseUrl, credentials, userAgent, }: Omit<IMoodleClientOptions, 'token'>): Promise<IMoodleWSAuthResponse>;
+    static authenticate({ baseUrl, credentials, userAgent, }: Omit<IMoodleClientOptions, "token">): Promise<IMoodleWSAuthResponse>;
     private static _format;
     private static _prepareParams;
     private _request;
 }
-declare const MoodleApi: (options: Omit<IMoodleClientOptions, 'credentials'>) => IExtMoodleWSAPI;
+declare const MoodleApi: (options: Omit<IMoodleClientOptions, "credentials">) => IExtMoodleWSAPI;
 export default MoodleApi;

@@ -1,8 +1,8 @@
-import os from 'os';
-import fs from 'fs';
-import { URLSearchParams } from 'url';
-import fetch, { RequestInit } from 'node-fetch';
-import debug from 'debug';
+import os from "os";
+import fs from "fs";
+import { URLSearchParams } from "url";
+import fetch, { RequestInit } from "node-fetch";
+import debug from "debug";
 
 import {
   IMoodleClientOptions,
@@ -10,15 +10,15 @@ import {
   IMoodleWSFn,
   IMoodleWSAPI,
   IMoodleWSParams,
-} from '../interfaces';
+} from "../interfaces";
 
-import IMoodleWSAuthResponse from '../interfaces/IMoodleWSAuthResponse';
+import IMoodleWSAuthResponse from "../interfaces/IMoodleWSAuthResponse";
 
 //Load package info
-import pkg from '../package.json';
-import path from 'path';
-import NameValuePair from '../types/NameValuePair';
-import MoodleError from './MoodleError';
+import pkg from "../package.json";
+import path from "path";
+import NameValuePair from "../types/NameValuePair";
+import MoodleError from "./MoodleError";
 
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
   [k: string]: any;
@@ -26,8 +26,8 @@ interface IExtMoodleWSAPI extends IMoodleWSAPI {
 
 //Load function definitions
 const json = fs.readFileSync(
-  path.resolve(__dirname, '../api', 'functions.json'),
-  'utf8'
+  path.resolve(__dirname, "../api", "functions.json"),
+  "utf8"
 );
 const definition: IMoodleWSDefinition = JSON.parse(json);
 
@@ -46,7 +46,7 @@ export class MoodleClient {
     }
 
     //Check the URL syntax
-    if (options.baseUrl.includes('server.php')) {
+    if (options.baseUrl.includes("server.php")) {
       throw new Error(
         "Argument 'options.baseUrl' should NOT contain the complete URL. Hint: provide base URL such as https://mooodle.example.com"
       );
@@ -54,7 +54,7 @@ export class MoodleClient {
     this._loadApi();
 
     //Sanitize base URL - trim trailing slash
-    options.baseUrl = options.baseUrl.trim().replace(/\/$/g, '');
+    options.baseUrl = options.baseUrl.trim().replace(/\/$/g, "");
   }
 
   private _loadApi() {
@@ -80,12 +80,12 @@ export class MoodleClient {
       //Create a new function
       if (!api[item.module][item.facility][item.preferName]) {
         this._functions.push(
-          item.module + '.' + item.facility + '.' + item.preferName
+          item.module + "." + item.facility + "." + item.preferName
         );
         api[item.module][item.facility][item.preferName] = function (
-          payload: IMoodleWSParams
+          params: IMoodleWSParams
         ) {
-          return client._request(item, payload);
+          return client._request(item, params);
         };
       }
     }
@@ -94,15 +94,15 @@ export class MoodleClient {
   private static _buildUserAgent(): string {
     return (
       pkg.name +
-      '/' +
+      "/" +
       pkg.version +
-      ' (node.js ' +
+      " (node.js " +
       process.version +
-      '; ' +
+      "; " +
       os.platform() +
-      ' ' +
+      " " +
       os.release() +
-      ')'
+      ")"
     );
   }
 
@@ -117,7 +117,7 @@ export class MoodleClient {
     let result: AnyObject = {};
 
     function dig(d: Diggable, prefix: string) {
-      if (typeof d === 'string' || typeof d === 'number') {
+      if (typeof d === "string" || typeof d === "number") {
         result[prefix] = d;
         return;
       }
@@ -131,21 +131,21 @@ export class MoodleClient {
             dig(
               item[i],
               prefix.length === 0
-                ? prefix + key + '[' + i + ']' //Root level has no square brackets
-                : prefix + '[' + key + '][' + i + ']' //Deeper levels must include brackets
+                ? prefix + key + "[" + i + "]" //Root level has no square brackets
+                : prefix + "[" + key + "][" + i + "]" //Deeper levels must include brackets
             );
           }
-        } else if (typeof item === 'object') {
+        } else if (typeof item === "object") {
           for (let i in item as AnyObject) {
-            dig(item, prefix + key + '[' + i + ']');
+            dig(item, prefix + key + "[" + i + "]");
           }
         } else {
-          result[prefix + '[' + key + ']'] = item;
+          result[prefix + "[" + key + "]"] = item;
         }
       }
     }
 
-    dig(data, '');
+    dig(data, "");
     return result;
   }
 
@@ -153,27 +153,27 @@ export class MoodleClient {
     baseUrl,
     credentials,
     userAgent,
-  }: Omit<IMoodleClientOptions, 'token'>) {
+  }: Omit<IMoodleClientOptions, "token">) {
     let options: RequestInit;
     // if (!payload.body) {
     //No data to be sent
     options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'User-Agent': userAgent ?? MoodleClient._buildUserAgent(),
-        Accept: 'application/json',
+        "User-Agent": userAgent ?? MoodleClient._buildUserAgent(),
+        Accept: "application/json",
       },
     };
 
-    let form: URLSearchParams | '' = new URLSearchParams({
+    let form: URLSearchParams | "" = new URLSearchParams({
       ...credentials,
-      service: credentials?.service ?? 'moodle_mobile_app',
+      service: credentials?.service ?? "moodle_mobile_app",
     } as any);
 
-    let url = baseUrl + 'login/token.php?' + form;
+    let url = baseUrl + "login/token.php?" + form;
     const res = await fetch(url, options);
     const result = await res.json();
-    if (typeof result.error === 'string') {
+    if (typeof result.error === "string") {
       throw new MoodleError(result);
     }
     return result as IMoodleWSAuthResponse;
@@ -197,6 +197,7 @@ export class MoodleClient {
   private static _prepareParams(params: IMoodleWSParams): URLSearchParams {
     let finalParams: IMoodleWSParams;
     finalParams = { ...params };
+    delete finalParams.token; //Getting rid of the token
     for (const key of Object.keys(params)) {
       const item = finalParams[key];
       if (item instanceof Array) {
@@ -230,7 +231,7 @@ export class MoodleClient {
 
         //Verify if function name is set
         if (!wsfunction || wsfunction.length === 0) {
-          throw new Error('Web Service function not defined: ' + item);
+          throw new Error("Web Service function not defined: " + item);
         }
 
         //Build request options
@@ -238,25 +239,24 @@ export class MoodleClient {
 
         //No data to be sent
         options = {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'User-Agent': this.userAgent,
-            Accept: 'application/json',
+            "User-Agent": this.userAgent,
+            Accept: "application/json",
           },
         };
 
-        let form: URLSearchParams | '' = '';
+        let form: URLSearchParams | "" = "";
         if (params) form = MoodleClient._prepareParams(params);
 
         //Complete the URL
-        let token = this.options.token || '';
         let url =
           this.options.baseUrl +
-          '/webservice/rest/server.php?wstoken=' +
-          this.api.config.token +
-          '&moodlewsrestformat=json&wsfunction=' +
+          "/webservice/rest/server.php?wstoken=" +
+          (params?.token ?? this.api.config.token ?? "") +
+          "&moodlewsrestformat=json&wsfunction=" +
           wsfunction +
-          '&' +
+          "&" +
           form;
 
         //Make a HTTP request
@@ -267,14 +267,14 @@ export class MoodleClient {
 
         //Moodle always returns HTTP status code 200
         //Error can be detected by object properties
-        if (typeof result.exception === 'string') {
+        if (typeof result.exception === "string") {
           throw new MoodleError(result);
         }
 
         //Success
         fnDebugger!(
           `Successfully called ${item.preferName} with parameters: ${
-            JSON.stringify(params) ?? 'null'
+            JSON.stringify(params) ?? "null"
           }.`
         );
         resolve(result as AnyObject);
@@ -290,7 +290,7 @@ export class MoodleClient {
   }
 }
 
-const MoodleApi = (options: Omit<IMoodleClientOptions, 'credentials'>) => {
+const MoodleApi = (options: Omit<IMoodleClientOptions, "credentials">) => {
   return new MoodleClient(options).api;
 };
 

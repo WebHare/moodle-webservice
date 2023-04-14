@@ -13,11 +13,11 @@ npm install moodle-webservice
 Get site info (using Promised callbacks)
 
 ```ts
-import MoodleApi, { MoodleClient } from 'moodle-webservice';
+import MoodleApi, { MoodleClient } from "moodle-webservice";
 
 const moodle = MoodleApi({
-  baseUrl: 'https://moodle.example.com', //<-- Put your Moodle URL here
-  token: 'exppsBdQwLvNwYRoAuaiBO5j0aWTzxU6', //<-- Put your token here
+  baseUrl: "https://moodle.example.com", //<-- Put your Moodle URL here
+  token: "exppsBdQwLvNwYRoAuaiBO5j0aWTzxU6", //<-- Put your token here
 });
 
 moodle.core.webservice //<-- with intellisense and type checking
@@ -51,41 +51,28 @@ async function main() {
 main();
 ```
 
+if a `token` param is provided, it will override the token supplied when instantiating the api
+
+```ts
+import MoodleApi, { MoodleClient } from "moodle-webservice";
+
+const moodle = MoodleApi({
+  baseUrl: "https://moodle.example.com",
+  token: "exppsBdQwLvNwYRoAuaiBO5j0aWTzxU6",
+});
+
+moodle.core.webservice
+  .getSiteInfo({ token: "37512512c24112b1235cc123f821bd27cd" }) //<-- This token will be used instead
+  .then((res) => console.log(res))
+  .catch((err) => console.error(err.message));
+
+moodle.config.token = "37512512c24112b1235cc123f821bd27cd"; //<-- You can also do this.
+//..many function calls with the same token above.
+```
+
 ## Intellisense + Typechecking
 
 ![](https://media.giphy.com/media/GA0jKe1PWuDcIP7rO7/giphy.gif)
-
-## Changing the token on the fly
-
-Instead of having to instantiate a new client instance every time you want to access your website
-as a different user, you can change the api token on the fly without changing the client instance.
-
-```ts
-import MoodleApi from 'moodle-webservice';
-const moodle = MoodleApi({ ... });
-
-async function main() {
-  try {
-    const { fullname: firstName } = await moodle.core.webservice.getSiteInfo();
-    console.log(firstName);
-
-    moodle.config.token = '3752235c2467122123cc04b821bd27cd';
-
-    const { fullname: secondName } = await moodle.core.webservice.getSiteInfo();
-    console.log(secondName);
-
-    /*
-      John Smith
-      Frank William
-    */
-  }
-  catch (err) {
-    console.log(err);
-  }
-}
-
-main();
-```
 
 ## Getting your api token.
 
@@ -93,8 +80,8 @@ if you don't immediately have your token to pass to the api you can import Moodl
 and use the authenticate method to get one.
 
 ```ts
-import MoodleApi, { MoodleClient } from 'moodle-webservice';
-const YOUR_WEBSITE_URL = 'https://moodle.example.com';
+import MoodleApi, { MoodleClient } from "moodle-webservice";
+const YOUR_WEBSITE_URL = "https://moodle.example.com";
 //No token provided beforehand
 const moodle = MoodleApi({
   baseUrl: YOUR_WEBSITE_URL, //<-- Put your Moodle URL here
@@ -105,7 +92,7 @@ async function main() {
     //result type of IMoodleWSAuthResponse
     const { token } = await MoodleClient.authenticate({
       baseUrl: YOUR_WEBSITE_URL,
-      credentials: { username: 'AwesomeJohn', password: 'SmartPa33word' },
+      credentials: { username: "AwesomeJohn", password: "SmartPa33word" },
     });
 
     moodle.config.token = token;
@@ -132,11 +119,11 @@ the rendered HTML question element.
 these issues.
 
 ```ts
-import MoodleApi, { MoodleAttempt } from 'moodle-webservice';
+import MoodleApi, { MoodleAttempt } from "moodle-webservice";
 
 const moodle = MoodleApi({
-  baseUrl: 'https://moodle.example.com',
-  token: '375208h132h1222h20h202b823b227cd',
+  baseUrl: "https://moodle.example.com",
+  token: "375208h132h1222h20h202b823b227cd",
 });
 
 moodle.mod.quiz.getAttemptReview({ attemptid: 3665103 }).then((res) => {
@@ -157,11 +144,11 @@ moodle.mod.quiz.getAttemptReview({ attemptid: 3665103 }).then((res) => {
 or parse a single question
 
 ```ts
-import MoodleApi, { MoodleQuestion } from 'moodle-webservice';
+import MoodleApi, { MoodleQuestion } from "moodle-webservice";
 
 const moodle = MoodleApi({
-  baseUrl: 'https://moodle.example.com',
-  token: '375208h132h1222h20h202b823b227cd',
+  baseUrl: "https://moodle.example.com",
+  token: "375208h132h1222h20h202b823b227cd",
 });
 
 moodle.mod.quiz.getAttemptReview({ attemptid: 3665103 }).then((res) => {
@@ -207,16 +194,16 @@ users[0][firstname]=Foo&users[0][lastname]=Bar&users[0][username]=foo&users[0][p
 To perform the conversion in the code invoke the `flatten` function
 
 ```ts
-import { MoodleClient } from 'moodle-webservice';
+import { MoodleClient } from "moodle-webservice";
 
 const form = MoodleClient.flatten({
   users: [
     {
-      firstname: 'Foo',
-      lastname: 'Bar',
-      username: 'foo',
-      password: 'FooBar123!',
-      email: 'foo@example.com',
+      firstname: "Foo",
+      lastname: "Bar",
+      username: "foo",
+      password: "FooBar123!",
+      email: "foo@example.com",
     },
   ],
 });

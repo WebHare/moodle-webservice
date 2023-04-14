@@ -1,23 +1,23 @@
-import IMoodleWSParams from './IMoodleWSParams';
-import IMoodleWSDiscussionPostsResponse from './IMoodleWSDiscussionPostsResponse';
-import IMoodleWSDiscussionsResponse from './IMoodleWSDiscussionsResponse';
-import IMoodleForum from './IMoodleForum';
-import IMoodleAttemptData from './IMoodleAttemptData';
-import IMoodleQuizAccessInfo from './IMoodleQuizAccessInfo';
-import IMoodleWSAttemptsResponse from './IMoodleWSAttemptsResponse';
-import IMoodleWSStatusResponse from './IMoodleWSStatusResponse';
-import IMoodleWSStartAttemptResponse from './IMoodleWSStartAttemptResponse';
-import MoodleAttemptUpdate from '../classes/MoodleAttemptUpdate';
-import NumericBoolean from '../types/NumericBoolean';
-import IMoodleWSProcessAttemptResponse from './IMoodleWSProcessAttemptResponse';
-import IMoodleAttemptReview from './IMoodleAttemptReview';
-import IMoodleAttemptAccessInfo from './IMoodleAttemptAccessInfo';
-import IMoodleWSAttemptSummaryResponse from './IMoodleWSAttemptSummaryResponse';
-import IMoodleQuizFeedback from './IMoodleQuizFeedback';
-import IMoodleWSBestGradeResponse from './IMoodleWSBestGradeResponse';
-import IMoodleWSQuizzesResponse from './IMoodleWSQuizzesResponse';
-import IMoodleWSReviewOptionsResponse from './IMoodleWSReviewOptionsResponse';
-import IMoodleWSQTypesResponse from './IMoodleWSQTypesResponse';
+import IMoodleWSParams from "./IMoodleWSParams";
+import IMoodleWSDiscussionPostsResponse from "./IMoodleWSDiscussionPostsResponse";
+import IMoodleWSDiscussionsResponse from "./IMoodleWSDiscussionsResponse";
+import IMoodleForum from "./IMoodleForum";
+import IMoodleAttemptData from "./IMoodleAttemptData";
+import IMoodleQuizAccessInfo from "./IMoodleQuizAccessInfo";
+import IMoodleWSAttemptsResponse from "./IMoodleWSAttemptsResponse";
+import IMoodleWSStatusResponse from "./IMoodleWSStatusResponse";
+import IMoodleWSStartAttemptResponse from "./IMoodleWSStartAttemptResponse";
+import MoodleAttemptUpdate from "../classes/MoodleAttemptUpdate";
+import NumericBoolean from "../types/NumericBoolean";
+import IMoodleWSProcessAttemptResponse from "./IMoodleWSProcessAttemptResponse";
+import IMoodleAttemptReview from "./IMoodleAttemptReview";
+import IMoodleAttemptAccessInfo from "./IMoodleAttemptAccessInfo";
+import IMoodleWSAttemptSummaryResponse from "./IMoodleWSAttemptSummaryResponse";
+import IMoodleQuizFeedback from "./IMoodleQuizFeedback";
+import IMoodleWSBestGradeResponse from "./IMoodleWSBestGradeResponse";
+import IMoodleWSQuizzesResponse from "./IMoodleWSQuizzesResponse";
+import IMoodleWSReviewOptionsResponse from "./IMoodleWSReviewOptionsResponse";
+import IMoodleWSQTypesResponse from "./IMoodleWSQTypesResponse";
 export default interface IMoodleWSMod {
     assign: {
         /** Copy a students previous attempt to a new attempt. */
@@ -179,6 +179,7 @@ export default interface IMoodleWSMod {
         /** Returns a list of forum posts for a discussion. */
         getDiscussionPosts: (params: {
             discussionid: number;
+            token?: string;
         }) => Promise<IMoodleWSDiscussionPostsResponse>;
         /** Returns a list of forum posts for a discussion for a user. */
         getDiscussionPostsByUserid: (params: IMoodleWSParams) => Promise<any>;
@@ -190,13 +191,15 @@ export default interface IMoodleWSMod {
         getForumDiscussions: (params: {
             forumid: number;
             page?: number;
+            token?: string;
         }) => Promise<IMoodleWSDiscussionsResponse>;
         /** Returns a list of forum discussions optionally sorted and paginated. */
         getForumDiscussionsPaginated: (params: IMoodleWSParams) => Promise<any>;
         /** Returns a list of forum instances in a provided set of courses, if no courses are provided then all the forum instances the user has access to will be returned. */
         getForumsByCourses: (params?: {
-            [k: string]: number | undefined;
-            'courseids[]'?: number;
+            [k: string]: any;
+            courseids?: number[];
+            token?: string;
         }) => Promise<IMoodleForum[]>;
         /** Prepares a draft area for editing a post. */
         prepareDraftAreaForPost: (params: IMoodleWSParams) => Promise<any>;
@@ -329,52 +332,63 @@ export default interface IMoodleWSMod {
         /** Return access information for a given attempt in a quiz. */
         getAttemptAccessInformation: (params: {
             quizid: number;
+            token?: string;
         }) => Promise<IMoodleAttemptAccessInfo>;
         /** Returns information for the given attempt page for a quiz attempt in progress. */
         getAttemptData: (params: {
             attemptid: number;
             page: number;
+            token?: string;
         }) => Promise<IMoodleAttemptData>;
         /** Returns review information for the given finished attempt, can be used by users or teachers. */
         getAttemptReview: (params: {
             attemptid: number;
+            token?: string;
         }) => Promise<IMoodleAttemptReview>;
         /** Returns a summary of a quiz attempt before it is submitted. */
         getAttemptSummary: (params: {
             attemptid: number;
+            token?: string;
         }) => Promise<IMoodleWSAttemptSummaryResponse>;
         /** Combines the review options from a number of different quiz attempts. */
         getCombinedReviewOptions: (params: {
             quizid: number;
+            token?: string;
         }) => Promise<IMoodleWSReviewOptionsResponse>;
         /** Return access information for a given quiz. */
         getQuizAccessInformation: (params: {
             quizid: number;
+            token?: string;
         }) => Promise<IMoodleQuizAccessInfo>;
         /** Get the feedback text that should be show to a student who got the given grade in the given quiz. */
         getQuizFeedbackForGrade: (params: {
             quizid: number;
             grade: number;
+            token?: string;
         }) => Promise<IMoodleQuizFeedback>;
         /** Return the potential question types that would be required for a given quiz. */
         getQuizRequiredQtypes: (params: {
             quizid: number;
+            token?: string;
         }) => Promise<IMoodleWSQTypesResponse>;
         /** Returns a list of quizzes in a provided list of courses, if no list is provided all quizzes that the user can view will be returned. */
         getQuizzesByCourses: (params: {
             courseids: number[];
+            token?: string;
         }) => Promise<IMoodleWSQuizzesResponse>;
         /** Return a list of attempts for the given quiz and user. */
         getUserAttempts: (params: {
             quizid: number;
             userid?: number;
-            status: 'finished' | 'unfinished' | 'all';
+            status: "finished" | "unfinished" | "all";
             includepreveiews?: boolean;
+            token?: string;
         }) => Promise<IMoodleWSAttemptsResponse>;
         /** Get the best current grade for the given user on a quiz. */
         getUserBestGrade: (params: {
             quizid: number;
             userid: number;
+            token?: string;
         }) => Promise<IMoodleWSBestGradeResponse>;
         /** Process responses during an attempt at a quiz and also deals with attempts finishing. */
         processAttempt: (params: {
@@ -382,32 +396,39 @@ export default interface IMoodleWSMod {
             finishattempt: NumericBoolean;
             timeup?: NumericBoolean;
             data?: MoodleAttemptUpdate;
+            token?: string;
         }) => Promise<IMoodleWSProcessAttemptResponse>;
         /** Processes save requests during the quiz. This function is intended for the quiz auto-save feature. */
         saveAttempt: (params: {
             attemptid: number;
             data: MoodleAttemptUpdate;
+            token?: string;
         }) => Promise<IMoodleWSStatusResponse>;
         /** Starts a new attempt at a quiz. */
         startAttempt: (params: {
             quizid: number;
+            token?: string;
         }) => Promise<IMoodleWSStartAttemptResponse>;
         /** Trigger the attempt viewed event. */
         viewAttempt: (params: {
             attemptid: number;
             page: number;
+            token?: string;
         }) => Promise<IMoodleWSStatusResponse>;
         /** Trigger the attempt reviewed event. */
         viewAttemptReview: (params: {
             attemptid: number;
+            token?: string;
         }) => Promise<IMoodleWSStatusResponse>;
         /** Trigger the attempt summary viewed event. */
         viewAttemptSummary: (params: {
             attemptid: number;
+            token?: string;
         }) => Promise<IMoodleWSStatusResponse>;
         /** Trigger the course module viewed event and update the module completion status. */
         viewQuiz: (params: {
             quizid: number;
+            token?: string;
         }) => Promise<IMoodleWSStatusResponse>;
     };
     resource: {
@@ -416,6 +437,7 @@ export default interface IMoodleWSMod {
         /** Trigger the course module viewed event and update the module completion status. */
         viewResource: (params: {
             resourceid: number;
+            token?: string;
         }) => Promise<IMoodleWSStatusResponse>;
     };
     scorm: {
@@ -454,6 +476,7 @@ export default interface IMoodleWSMod {
         /** Trigger the course module viewed event and update the module completion status. */
         viewUrl: (params: {
             urlid: number;
+            token?: string;
         }) => Promise<IMoodleWSStatusResponse>;
     };
     wiki: {

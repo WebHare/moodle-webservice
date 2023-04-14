@@ -12,4 +12,5 @@ export default interface IMoodleWSParams {
     data?: any;
     forumid?: number;
     courseids?: number[];
+    token?: string;
 }

@@ -9,14 +9,14 @@ class MoodleAttemptUpdate {
     }
     _loadUpdate(update) {
         if (update.answer !== undefined) {
-            this[`q${update.question}:${update.slot}_answer`] = update.answer;
+            this[`q${update.instance}:${update.slot}_answer`] = update.answer;
             if (update.sequencecheck === undefined)
-                throw new Error(`No sequence check provided for answer update question: ${update.question}`);
-            this[`q${update.question}:${update.slot}_:sequencecheck`] =
+                throw new Error(`No sequence check provided for answer update question: ${update.instance}`);
+            this[`q${update.instance}:${update.slot}_:sequencecheck`] =
                 update.sequencecheck;
         }
         if (update.flagged !== undefined)
-            this[`q${update.question}:${update.slot}_:flagged`] = update.flagged;
+            this[`q${update.instance}:${update.slot}_:flagged`] = update.flagged;
     }
 }
 exports.default = MoodleAttemptUpdate;

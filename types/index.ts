@@ -1,15 +1,15 @@
-import type AttemptStates from './AttemptStates';
-import type EnrolmentMethods from './EnrolmentMethods';
-import type ModuleNames from './ModuleNames';
-import type NameValuePair from './NameValuePair';
-import type NameVersionPair from './NameVersionPair';
-import type NumericBoolean from './NumericBoolean';
-import type QuestionBehaviours from './QuestionBehaviours';
-import type QuestionStates from './QuestionStates';
-import type QuestionStatuses from './QuestionStatuses';
-import QuestionTypes from './QuestionTypes';
-import type QuizAccessRules from './QuizAccessRules';
-import type ResourceTypes from './ResourceTypes';
+import type NameValuePair from "./NameValuePair";
+import type NameVersionPair from "./NameVersionPair";
+import type NumericBoolean from "./NumericBoolean";
+import AttemptStates from "./AttemptStates";
+import EnrolmentMethods from "./EnrolmentMethods";
+import ModuleNames from "./ModuleNames";
+import QuestionBehaviours from "./QuestionBehaviours";
+import QuestionStates from "./QuestionStates";
+import QuestionStatuses from "./QuestionStatuses";
+import QuestionTypes from "./QuestionTypes";
+import QuizAccessRules from "./QuizAccessRules";
+import ResourceTypes from "./ResourceTypes";
 
 export {
   QuestionTypes,
