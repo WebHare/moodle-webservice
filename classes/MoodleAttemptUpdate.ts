@@ -1,4 +1,4 @@
-import IMoodleQuestionUpdate from '../interfaces/IMoodleQuestionUpdate';
+import IMoodleQuestionUpdate from "../interfaces/IMoodleQuestionUpdate";
 
 export default class MoodleAttemptUpdate {
   [k: string]: any;
@@ -12,15 +12,15 @@ export default class MoodleAttemptUpdate {
 
   private _loadUpdate(update: IMoodleQuestionUpdate) {
     if (update.answer !== undefined) {
-      this[`q${update.question}:${update.slot}_answer`] = update.answer;
+      this[`q${update.instance}:${update.slot}_answer`] = update.answer;
       if (update.sequencecheck === undefined)
         throw new Error(
-          `No sequence check provided for answer update question: ${update.question}`
+          `No sequence check provided for answer update question: ${update.instance}`
         );
-      this[`q${update.question}:${update.slot}_:sequencecheck`] =
+      this[`q${update.instance}:${update.slot}_:sequencecheck`] =
         update.sequencecheck;
     }
     if (update.flagged !== undefined)
-      this[`q${update.question}:${update.slot}_:flagged`] = update.flagged;
+      this[`q${update.instance}:${update.slot}_:flagged`] = update.flagged;
   }
 }
