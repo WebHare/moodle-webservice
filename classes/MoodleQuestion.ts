@@ -1,4 +1,4 @@
-import { IMoodleQuestion } from "../interfaces";
+import { IMoodleQuestion, IMoodleQuestionUpdate } from "../interfaces";
 import { QuestionTypes } from "../types";
 import { HTMLElement } from "node-html-parser";
 import IMoodleParsedQuestion from "../interfaces/IMoodleParsedQuestion";
@@ -18,7 +18,9 @@ export default abstract class MoodleQuestion {
     const textElement = parsedHTML.querySelector(".qtext");
     if (!textElement)
       throw MoodleQuestion._error(`Could not find question text.`);
-    MoodleQuestion._debug(`Successfully extracted question text.`);
+    MoodleQuestion._debug(
+      `Successfully extracted question text <${textElement.text}>.`
+    );
     return textElement.text;
   }
 
@@ -41,7 +43,9 @@ export default abstract class MoodleQuestion {
     const instance: string = matchObj[1];
     if (!instance) throw MoodleQuestion._error(couldNotFind("instance match"));
 
-    MoodleQuestion._debug(`Successfully extracted question instance number.`);
+    MoodleQuestion._debug(
+      `Successfully extracted question instance number <${instance}>.`
+    );
     return Number(instance);
   }
 
@@ -65,6 +69,63 @@ export default abstract class MoodleQuestion {
       }
       default:
         return MoodleQMultiChoice.parse(question);
+    }
+  }
+
+  public static cheatFrom(
+    destination: IMoodleParsedQuestion,
+    source: IMoodleParsedQuestion,
+    checkMatch: boolean = true
+  ) {
+    if (checkMatch) {
+      if (!MoodleQuestion.match(destination, source))
+        throw MoodleQuestion._error(
+          `Trying to copy answer from question with incompatible type.`
+        );
+    }
+    switch (destination.type) {
+      case QuestionTypes.MultiChoice:
+        return MoodleQMultiChoice.cheatFrom(destination, source);
+      default:
+        return MoodleQMultiChoice.cheatFrom(destination, source);
+    }
+  }
+
+  public static match(
+    questionA: IMoodleParsedQuestion,
+    questionB: IMoodleParsedQuestion
+  ): boolean {
+    MoodleQuestion._debug(
+      `Matching questions <${questionA.instance}> and <${questionB.instance}>`
+    );
+    if (questionA.type !== questionB.type) return false;
+    switch (questionA.type) {
+      case QuestionTypes.MultiChoice:
+        MoodleQuestion._debug(
+          `Mutlichoice questions detected, passing to multichoice question helper...`
+        );
+        return MoodleQMultiChoice.match(questionA, questionB);
+      default:
+        throw MoodleQuestion._error(
+          `Unknown question types, cannot match questions.`
+        );
+    }
+  }
+
+  public static toUpdate(
+    question: IMoodleParsedQuestion
+  ): IMoodleQuestionUpdate {
+    MoodleQuestion._debug(`Converting question to update object...`);
+    switch (question.type) {
+      case QuestionTypes.MultiChoice:
+        MoodleQuestion._debug(
+          `Multichoice question detected, passing to multichoice helper...`
+        );
+        return MoodleQMultiChoice.toUpdate(question);
+      default:
+        throw MoodleQuestion._error(
+          `Unknown question type, cannot convert to update object.`
+        );
     }
   }
 }

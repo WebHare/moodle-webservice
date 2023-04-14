@@ -1,4 +1,4 @@
-import { IMoodleQuestion } from "../interfaces";
+import { IMoodleQuestion, IMoodleQuestionUpdate } from "../interfaces";
 import { parse, HTMLElement } from "node-html-parser";
 import IMoodleParsedQuestion from "../interfaces/IMoodleParsedQuestion";
 import IMoodleQuestionChoice from "../interfaces/IMoodleQuestionChoice";
@@ -109,7 +109,8 @@ export default abstract class MoodleQMultiChoice {
   }
 
   private static _extractAnswerLabelFromHTML(parsedHTML: HTMLElement) {
-    const answer = parsedHTML.querySelector(".rightanswer > span")?.text;
+    const answerBoxText = parsedHTML.querySelector(".rightanswer")?.text;
+    const answer = /(is|are)[ ]?:[ ]?([\s\S]*)/.exec(answerBoxText ?? "")?.[2];
     if (answer)
       MoodleQMultiChoice._debug(
         `Successfully extracted answer label from HTML, label: <${answer}>.`
@@ -136,6 +137,62 @@ export default abstract class MoodleQMultiChoice {
     const noHTMLQuestion: Partial<IMoodleQuestion> = { ...question };
     delete noHTMLQuestion.html;
     return noHTMLQuestion as Required<IMoodleQuestion>;
+  }
+
+  public static toUpdate(
+    question: IMoodleParsedQuestion
+  ): IMoodleQuestionUpdate {
+    const answer = (question.answer as IMoodleQuestionChoice)?.value;
+    MoodleQMultiChoice._debug(
+      `Successfully converted multichoice question <${question.instance}> to update object.`
+    );
+    return {
+      instance: question.instance,
+      slot: question.slot,
+      answer,
+      flagged: question.flagged ? 1 : 0,
+      sequencecheck: question.sequencecheck,
+    };
+  }
+
+  /**Copies answer from source and returns a new question object with the correct answer
+   * if no answer is found, the destination question is returned as is.
+   */
+  public static cheatFrom(
+    destination: IMoodleParsedQuestion,
+    source: IMoodleParsedQuestion
+  ): IMoodleParsedQuestion {
+    for (const destChoice of destination.choices!) {
+      const typedAnswer = source.answer as IMoodleQuestionChoice;
+      if (destChoice.label === typedAnswer.label) {
+        return {
+          ...destination,
+          chosen: destChoice.value,
+          answer: {
+            label: typedAnswer.label,
+            value: destChoice.value,
+          },
+        };
+      }
+    }
+    return destination;
+  }
+
+  public static match(
+    questionA: IMoodleParsedQuestion,
+    questionB: IMoodleParsedQuestion
+  ): boolean {
+    //TODO: find a stricter criteria for finding matching questions.
+    MoodleQMultiChoice._debug(
+      `Matching multichoice questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}>...`
+    );
+    const match = questionA.text === questionB.text;
+    MoodleQMultiChoice._debug(
+      match
+        ? `Questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}> match!`
+        : `Questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}> do not match.`
+    );
+    return match;
   }
 
   public static parse(question: IMoodleQuestion): IMoodleParsedQuestion {
@@ -189,7 +246,10 @@ export default abstract class MoodleQMultiChoice {
           answer = { label: answerLabel, value: answerValue! };
           break;
       }
-    }
+    } else
+      MoodleQMultiChoice._debug(
+        `Question is not graded, cannot extract answer.`
+      );
 
     MoodleQMultiChoice._debug(
       `Successfully parsed multichoice question #${question.slot}...`
