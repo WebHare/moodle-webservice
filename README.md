@@ -1,3 +1,6 @@
+# About this fork
+We have forked this project from https://github.com/IHAVENOARMS/moodle-webservice.
+
 # TypeScript Moodle API client for Node.js
 
 A simple and developer friendly TypeScript module to perform Web Service (API) calls to the Moodle site.
