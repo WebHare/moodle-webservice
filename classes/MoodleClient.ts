@@ -1,7 +1,6 @@
 import os from "os";
 import fs from "fs";
 import { URLSearchParams } from "url";
-import fetch, { RequestInit } from "node-fetch";
 import debug from "debug";
 
 import {

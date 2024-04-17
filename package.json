@@ -6,7 +6,6 @@
   "scripts": {},
   "dependencies": {
     "debug": "^4.3.4",
-    "node-fetch": "^2.6.1",
     "node-html-parser": "^6.1.5"
   },
   "repository": {
@@ -20,7 +19,6 @@
   "devDependencies": {
     "@types/debug": "^4.1.7",
     "@types/node": "^18.15.11",
-    "@types/node-fetch": "^2.6.3",
     "@types/prettier": "^2.7.2",
     "dotenv": "^16.0.3",
     "jsdom": "^16.5.3",
