@@ -10,13 +10,13 @@ A simple and developer friendly TypeScript module to perform Web Service (API) c
 Install the module
 
 ```bash
-npm install moodle-webservice
+npm install @webhare/moodle-webservice
 ```
 
 Get site info (using Promised callbacks)
 
 ```ts
-import MoodleApi, { MoodleClient } from "moodle-webservice";
+import { MoodleApi } from "@webhare/moodle-webservice";
 
 const moodle = MoodleApi({
   baseUrl: "https://moodle.example.com", //<-- Put your Moodle URL here
@@ -32,7 +32,7 @@ moodle.core.webservice //<-- with intellisense and type checking
 Get course contents (using async-await approach)
 
 ```ts
-import MoodleApi from 'moodle-webservice';
+import { MoodleApi } from '@webhare/moodle-webservice';
 const moodle = MoodleApi({ ... });
 
 async function main() {
@@ -57,7 +57,7 @@ main();
 if a `token` param is provided, it will override the token supplied when instantiating the api
 
 ```ts
-import MoodleApi, { MoodleClient } from "moodle-webservice";
+import { MoodleApi } from "@webhare/moodle-webservice";
 
 const moodle = MoodleApi({
   baseUrl: "https://moodle.example.com",
@@ -83,7 +83,7 @@ if you don't immediately have your token to pass to the api you can import Moodl
 and use the authenticate method to get one.
 
 ```ts
-import MoodleApi, { MoodleClient } from "moodle-webservice";
+import { MoodleApi, MoodleClient } from "@webhare/moodle-webservice";
 const YOUR_WEBSITE_URL = "https://moodle.example.com";
 //No token provided beforehand
 const moodle = MoodleApi({
@@ -122,7 +122,7 @@ the rendered HTML question element.
 these issues.
 
 ```ts
-import MoodleApi, { MoodleAttempt } from "moodle-webservice";
+import { MoodleApi, MoodleAttempt } from "@webhare/moodle-webservice";
 
 const moodle = MoodleApi({
   baseUrl: "https://moodle.example.com",
@@ -147,7 +147,7 @@ moodle.mod.quiz.getAttemptReview({ attemptid: 3665103 }).then((res) => {
 or parse a single question
 
 ```ts
-import MoodleApi, { MoodleQuestion } from "moodle-webservice";
+import { MoodleApi, MoodleQuestion } from "@webhare/moodle-webservice";
 
 const moodle = MoodleApi({
   baseUrl: "https://moodle.example.com",
@@ -197,7 +197,7 @@ users[0][firstname]=Foo&users[0][lastname]=Bar&users[0][username]=foo&users[0][p
 To perform the conversion in the code invoke the `flatten` function
 
 ```ts
-import { MoodleClient } from "moodle-webservice";
+import { MoodleClient } from "@webhare/moodle-webservice";
 
 const form = MoodleClient.flatten({
   users: [
