@@ -265,8 +265,9 @@ export class MoodleClient {
         let result = await res.json();
 
         //Moodle always returns HTTP status code 200
-        //Error can be detected by object properties
-        if (typeof result.exception === "string") {
+        //Error can be detected by object propertie
+        //NOTE: Moodle can also return 'null' so be careful when checking for exceptions
+        if (typeof result?.exception === "string") {
           throw new MoodleError(result);
         }
 
