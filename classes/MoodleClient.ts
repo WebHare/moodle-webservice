@@ -293,4 +293,6 @@ const MoodleApi = (options: Omit<IMoodleClientOptions, "credentials">) => {
   return new MoodleClient(options).api;
 };
 
-export default MoodleApi;
+type MoodleApiClient = MoodleClient["api"];
+
+export { MoodleApi, type MoodleApiClient };

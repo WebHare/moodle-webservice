@@ -1,6 +1,6 @@
 import MoodleAttempt from './MoodleAttempt';
 import MoodleAttemptUpdate from './MoodleAttemptUpdate';
-import MoodleApi, { MoodleClient } from './MoodleClient';
+import { MoodleApi, MoodleClient, type MoodleApiClient } from './MoodleClient';
 import MoodleQuestion from './MoodleQuestion';
 import MoodleError from './MoodleError';
 
@@ -11,4 +11,5 @@ export {
   MoodleClient,
   MoodleQuestion,
   MoodleError,
+  type MoodleApiClient
 };
