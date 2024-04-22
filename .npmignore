@@ -5,6 +5,7 @@
 !*.d.ts
 
 tsconfig.json
+localtests
 utils_dev/
 .prettierrc
 .gitignore
@@ -12,3 +13,4 @@ test.ts
 .env
 api/function-signatures_dev.json
 api/functions.html
+*.tgz

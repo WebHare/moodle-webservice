@@ -2,8 +2,11 @@
   "name": "@webhare/moodle-webservice",
   "version": "1.3.0",
   "description": "Moodle Web Service API client with intellisense and typechecking",
-  "main": "index.ts",
-  "scripts": {},
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "tsc",
+    "test": "tsrun tests/test-moodle.ts"
+  },
   "dependencies": {
     "debug": "^4.3.4",
     "node-html-parser": "^6.1.5"
@@ -20,9 +23,9 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^18.15.11",
     "@types/prettier": "^2.7.2",
+    "@webhare/tsrun": "^0.505.0",
     "dotenv": "^16.0.3",
     "jsdom": "^16.5.3",
-    "mocha": "^10.2.0",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
