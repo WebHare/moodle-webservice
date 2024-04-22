@@ -22,12 +22,8 @@
   "devDependencies": {
     "@types/debug": "^4.1.7",
     "@types/node": "^18.15.11",
-    "@types/prettier": "^2.7.2",
     "@webhare/tsrun": "^0.505.0",
     "dotenv": "^16.0.3",
-    "jsdom": "^16.5.3",
-    "prettier": "^2.8.7",
-    "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
   },
   "author": "Yousef Gamal",
