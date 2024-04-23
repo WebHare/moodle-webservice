@@ -270,7 +270,14 @@ To test the module:
 ```bash
 export MOODLE_BASEURL=http://127.0.0.1:8051
 export MOODLE_TOKEN=XXX
-tsrun
+npm run tsrun tests/test-moodle.ts
+```
 
 to add more functions
 - http://127.0.0.1:8051/admin/webservice/service_functions.php?id=2
+
+## Updating the module
+```bash
+npm run prepublish
+npm publish
+```
