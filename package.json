@@ -1,11 +1,12 @@
 {
   "name": "@webhare/moodle-webservice",
-  "version": "1.3.0",
+  "version": "1.9.0",
   "description": "Moodle Web Service API client with intellisense and typechecking",
   "main": "index.js",
   "scripts": {
     "prepublish": "tsc",
-    "test": "tsrun tests/test-moodle.ts"
+    "test": "tsrun tests/test-moodle.ts",
+    "tsrun": "tsrun"
   },
   "dependencies": {
     "debug": "^4.3.4",
@@ -28,7 +29,6 @@
   },
   "author": "Yousef Gamal",
   "license": "MIT",
-  "types": "./index.d.ts",
   "bugs": {
     "url": "https://github.com/WebHare/moodle-webservice/issues"
   },

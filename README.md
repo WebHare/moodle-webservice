@@ -239,3 +239,38 @@ and instead have `IMoodleWSParams` as its parameter type and `any` as its return
 
 I've added types for the most important functions first, and I'll keep adding more as I go,
 contact me if you want to add types for a function that you know about.
+
+## Running your own moodle
+For development/testing against a Moodle consider using the docker containers defined in `my-moodle`:
+
+```bash
+cd my-moodle/
+docker-compose up
+# now: open http://127.0.0.1:8051/
+```
+
+See https://hub.docker.com/r/bitnami/moodle for details about these containers
+
+After starting, login at http://127.0.0.1:8051/ using: user/bitnami
+
+### Enabling the API
+- http://127.0.0.1:8051/admin/settings.php?section=optionalsubsystems
+  - Enable webservices
+- http://127.0.0.1:8051/admin/settings.php?section=webserviceprotocols
+  - Enable REST
+  - Enable documentation
+- http://127.0.0.1:8051/admin/settings.php?section=webservicesoverview helps you enroll the service - shows the steps and links
+- http://127.0.0.1:8051/admin/settings.php?section=externalservices
+  - Add service. Configure as needed, don't forget to enable the functions you need
+  - This is also where you need to go back to add more functions later
+- http://127.0.0.1:8051/admin/webservice/tokens.php?action=create
+  - Get the token. You'll need it for MODULE_TOKEN below
+
+To test the module:
+```bash
+export MOODLE_BASEURL=http://127.0.0.1:8051
+export MOODLE_TOKEN=XXX
+tsrun
+
+to add more functions
+- http://127.0.0.1:8051/admin/webservice/service_functions.php?id=2
